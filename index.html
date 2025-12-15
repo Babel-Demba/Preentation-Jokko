@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Pacte : Sénégal & Diaspora - Une Nouvelle Ère</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <!-- Leaflet CSS (Maps) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Markdown Parser for AI responses -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f9ff; /* Light blue tint */
+            color: #1e3a8a; /* Deep Blue text */
+        }
+        
+        /* Palette Definitions */
+       .bg-brand-dark { background-color: #1e3a8a; } /* Deep Royal Blue */
+       .bg-brand-primary { background-color: #0369a1; } /* Rich Blue */
+       .bg-brand-accent { background-color: #0ea5e9; } /* Sky Blue */
+       .bg-brand-highlight { background-color: #f59e0b; } /* Gold/Amber */
+       .text-brand-dark { color: #1e3a8a; }
+       .text-brand-primary { color: #0369a1; }
+       .text-brand-accent { color: #0ea5e9; }
+        
+        /* Chart Container Strict Styling */
+       .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        /* Map Container */
+        #mapDiaspora {
+            height: 500px;
+            width: 100%;
+            border-radius: 0.75rem;
+            z-index: 1; /* Ensure it stays below dropdowns if any */
+        }
+        
+        @media (max-width: 768px) {
+           .chart-container {
+                height: 300px;
+            }
+            #mapDiaspora {
+                height: 350px;
+            }
+        }
+
+        /* Timeline Styling */
+       .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #0ea5e9;
+            transform: translateX(-50%);
+        }
+        
+       .timeline-point {
+            z-index: 10;
+        }
+
+        /* AI Chat Styling */
+       .chat-bubble {
+            max-width: 80%;
+            border-radius: 1rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+       .chat-user {
+            background-color: #0ea5e9;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 0.25rem;
+        }
+       .chat-ai {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            align-self: flex-start;
+            border-bottom-left-radius: 0.25rem;
+            border: 1px solid #e5e7eb;
+        }
+       .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Markdown Styles inside Chat */
+       .chat-ai ul { list-style-type: disc; margin-left: 1.5rem; margin-top: 0.5rem; }
+       .chat-ai ol { list-style-type: decimal; margin-left: 1.5rem; margin-top: 0.5rem; }
+       .chat-ai strong { font-weight: 700; color: #0369a1; }
+       .chat-ai table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+       .chat-ai th,.chat-ai td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+       .chat-ai th { background-color: #e0f2fe; color: #0369a1; }
+
+        /* Loader */
+       .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #0ea5e9;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header / Hook -->
+    <header class="bg-brand-dark text-white py-16 px-4 shadow-lg">
+        <div class="max-w-6xl mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tight">LE PACTE</h1>
+            <p class="text-xl md:text-2xl font-light text-sky-200 uppercase tracking-widest mb-8">Refondation de la relation État-Diaspora</p>
+            <div class="w-24 h-1 bg-brand-highlight mx-auto mb-8"></div>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl leading-relaxed opacity-90">
+                Plongée au cœur d'une relation complexe. Du cri du cœur d'une communauté frustrée à une réponse chirurgicale et stratégique. Voici le plan pour transformer la défiance en une alliance nationale.
+            </p>
+        </div>
+    </header>
+
+    <!-- Section 1: The Diagnosis (Chart.js) -->
+    <section class="py-12 px-4 max-w-7xl mx-auto">
+        <div class="mb-10 text-center">
+            <h2 class="text-3xl font-bold text-brand-dark mb-4">1. Le Diagnostic : La Rupture de Confiance</h2>
+            <p class="text-gray-600 max-w-4xl mx-auto text-lg">
+                Le constat est sans appel : un fossé s'est creusé. Lenteurs administratives, absence de digitalisation et insécurité foncière ont créé un sentiment d'abandon. L'exemple le plus frappant reste le coût exorbitant et l'absurdité logistique pour un simple renouvellement de passeport.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <!-- Text Content -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-l-4 border-brand-highlight">
+                <h3 class="text-2xl font-bold mb-4 text-brand-primary">L'Absurdité Administrative</h3>
+                <p class="mb-4 text-gray-700">
+                    Pour un Sénégalais vivant en Californie, obtenir un tampon administratif n'est pas une formalité, c'est une expédition.
+                </p>
+                <ul class="space-y-3 mb-6">
+                    <li class="flex items-start">
+                        <span class="text-red-500 mr-2 text-xl">&#10008;</span>
+                        <span>3 jours de congés obligatoires</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-red-500 mr-2 text-xl">&#10008;</span>
+                        <span>Vol de 6 heures vers New York</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-red-500 mr-2 text-xl">&#10008;</span>
+                        <span>Coûts logistiques exorbitants</span>
+                    </li>
+                </ul>
+                <div class="bg-red-50 p-4 rounded text-red-800 font-semibold text-center">
+                    "Si l'État n'est pas fiable pour un papier, comment l'être pour l'épargne d'une vie?"
+                </div>
+            </div>
+
+            <!-- Visualization: Cost Comparison -->
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h4 class="text-center font-semibold text-gray-500 mb-4 uppercase text-sm">Comparatif du Coût Réel : Démarche Administrative</h4>
+                <div class="chart-container">
+                    <canvas id="passportCostChart"></canvas>
+                </div>
+                <p class="text-xs text-center text-gray-400 mt-2">Estimation basée sur un résident de la côte ouest des USA</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Areas of Impact (Chart.js Radar) -->
+    <section class="py-12 px-4 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-10 text-center">
+                <h2 class="text-3xl font-bold text-brand-dark mb-4">2. Les Domaines en Souffrance</h2>
+                <p class="text-gray-600 max-w-4xl mx-auto text-lg">
+                    Le déficit de confiance contamine tout. De l'immobilier, miné par les arnaques foncières et l'absence de cadastre numérique, jusqu'à l'assistance sociale pour les détenus ou les rapatriements. L'écart entre les attentes légitimes de la diaspora et la réalité du terrain est critique.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="order-2 md:order-1 chart-container">
+                    <canvas id="trustGapChart"></canvas>
+                </div>
+                
+                <div class="order-1 md:order-2 space-y-6">
+                    <div class="flex items-start p-4 bg-blue-50 rounded-lg">
+                        <span class="text-3xl mr-4">&#127968;</span> <!-- House unicode -->
+                        <div>
+                            <h4 class="font-bold text-brand-primary text-xl">L'Immobilier & Le Foncier</h4>
+                            <p class="text-gray-700">Le projet d'une vie transformé en source d'angoisse. Titres superposés, absence de vérification en ligne, escroqueries impunies.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-4 bg-blue-50 rounded-lg">
+                        <span class="text-3xl mr-4">&#128104;&#8205;&#9878;&#65039;</span> <!-- Judge/Legal unicode -->
+                        <div>
+                            <h4 class="font-bold text-brand-primary text-xl">Protection Sociale & Juridique</h4>
+                            <p class="text-gray-700">Des détenus isolés sans visite possible faute d'autorisation consulaire. Un sentiment d'abandon total dans les moments de crise.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-4 bg-blue-50 rounded-lg">
+                        <span class="text-3xl mr-4">&#128188;</span> <!-- Briefcase unicode -->
+                        <div>
+                            <h4 class="font-bold text-brand-primary text-xl">Retour & Réintégration</h4>
+                            <p class="text-gray-700">Des talents prêts à rentrer mais bloqués par un vide structurel. Pas d'accueil, pas d'orientation, des barrières culturelles énormes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Strategic Plan (HTML Grid) -->
+    <section class="py-16 px-4 bg-brand-dark text-white">
+        <div class="max-w-7xl mx-auto text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">3. La Riposte Stratégique : Le Guichet Unique</h2>
+            <p class="text-sky-200 text-lg max-w-3xl mx-auto">
+                Fini les lamentations. Place à la mécanique de précision. Une refonte totale basée sur une nouvelle philosophie : "Servir, Protéger, Autonomiser".
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            <!-- Card 1 -->
+            <div class="bg-white text-brand-dark p-6 rounded-lg shadow-xl hover:-translate-y-2 transition-transform duration-300">
+                <div class="text-4xl mb-4">&#128737;&#65039;</div> <!-- Shield unicode -->
+                <h3 class="font-bold text-xl mb-3 border-b-2 border-brand-highlight pb-2">Sécurisation Juridique</h3>
+                <p class="text-sm leading-relaxed">
+                    Création d'une liste blanche de promoteurs certifiés et d'une cellule d'investigation dédiée. Guerre déclarée à l'impunité foncière.
+                </p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white text-brand-dark p-6 rounded-lg shadow-xl hover:-translate-y-2 transition-transform duration-300">
+                <div class="text-4xl mb-4">&#127959;&#65039;</div> <!-- Cityscape unicode -->
+                <h3 class="font-bold text-xl mb-3 border-b-2 border-brand-highlight pb-2">Habitat & Urbanisme</h3>
+                <p class="text-sm leading-relaxed">
+                    Accès direct au registre foncier numérique. Lancement de "Diaspora City" : un aménagement urbain pensé pour et avec la diaspora.
+                </p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white text-brand-dark p-6 rounded-lg shadow-xl hover:-translate-y-2 transition-transform duration-300">
+                <div class="text-4xl mb-4">&#128200;</div> <!-- Chart Increasing unicode -->
+                <h3 class="font-bold text-xl mb-3 border-b-2 border-brand-highlight pb-2">Investissement</h3>
+                <p class="text-sm leading-relaxed">
+                    Bureau d'investissement dédié pour accompagner les entrepreneurs. Navigation facilitée dans les complexités locales et fiscales.
+                </p>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="bg-white text-brand-dark p-6 rounded-lg shadow-xl hover:-translate-y-2 transition-transform duration-300">
+                <div class="text-4xl mb-4">&#128187;</div> <!-- Computer unicode -->
+                <h3 class="font-bold text-xl mb-3 border-b-2 border-brand-highlight pb-2">Services Sociaux</h3>
+                <p class="text-sm leading-relaxed">
+                    Plateforme 100% en ligne pour passeports/CNI. Facilitation des autorisations consulaires urgentes (rapatriements, visites).
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Operational Model (HTML Flow) -->
+    <section class="py-14 px-4 max-w-6xl mx-auto">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-brand-dark">4. Le Modèle "Phygital"</h2>
+            <p class="text-gray-600 mt-2">Le meilleur des deux mondes pour garantir efficacité et humanité.</p>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-8 justify-center items-stretch">
+            <div class="flex-1 bg-gradient-to-br from-blue-600 to-blue-800 text-white p-8 rounded-2xl shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 text-9xl opacity-10 pointer-events-none">&#127963;</div> <!-- Building -->
+                <h3 class="text-2xl font-bold mb-4">Le Centre Physique (Dakar)</h3>
+                <p class="mb-4 text-blue-100">Un lieu identifiable, symbole de l'engagement de l'État.</p>
+                <ul class="space-y-2 text-sm font-light">
+                    <li>&#10004; Accueil humain et personnalisé</li>
+                    <li>&#10004; Résolution de conflits complexes</li>
+                    <li>&#10004; Rebâtir la confiance "yeux dans les yeux"</li>
+                </ul>
+            </div>
+
+            <div class="flex items-center justify-center text-4xl text-brand-highlight font-black">
+                +
+            </div>
+
+            <div class="flex-1 bg-gradient-to-br from-cyan-500 to-blue-500 text-white p-8 rounded-2xl shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 text-9xl opacity-10 pointer-events-none">&#128241;</div> <!-- Mobile -->
+                <h3 class="text-2xl font-bold mb-4">La Plateforme Digitale</h3>
+                <p class="mb-4 text-blue-100">Accessible 24/7 depuis n'importe où dans le monde.</p>
+                <ul class="space-y-2 text-sm font-light">
+                    <li>&#10004; Dématérialisation totale des démarches</li>
+                    <li>&#10004; Suivi de dossier en temps réel</li>
+                    <li>&#10004; Transparence des procédures</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Roadmap (HTML Timeline) -->
+    <section class="py-12 px-4 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-brand-dark">5. La Feuille de Route</h2>
+                <p class="text-gray-600 mt-2">Des résultats visibles rapidement. Pas d'attente de perfection.</p>
+            </div>
+
+            <div class="relative py-8">
+                <div class="timeline-line hidden md:block"></div>
+
+                <!-- Step 1 -->
+                <div class="flex flex-col md:flex-row items-center mb-12 relative">
+                    <div class="md:w-1/2 md:pr-8 text-center md:text-right mb-4 md:mb-0">
+                        <h3 class="text-xl font-bold text-brand-primary">L'Acte Politique</h3>
+                        <p class="text-gray-600 text-sm">Décret présidentiel officialisant le Guichet Unique. Un signal fort au sommet de l'État.</p>
+                    </div>
+                    <div class="timeline-point w-8 h-8 bg-brand-highlight rounded-full border-4 border-white shadow-lg flex-shrink-0"></div>
+                    <div class="md:w-1/2 md:pl-8 hidden md:block"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flex flex-col md:flex-row items-center mb-12 relative">
+                    <div class="md:w-1/2 md:pr-8 hidden md:block"></div>
+                    <div class="timeline-point w-8 h-8 bg-brand-primary rounded-full border-4 border-white shadow-lg flex-shrink-0"></div>
+                    <div class="md:w-1/2 md:pl-8 text-center md:text-left mt-4 md:mt-0">
+                        <h3 class="text-xl font-bold text-brand-primary">Task Force Diaspora</h3>
+                        <p class="text-gray-600 text-sm">Équipe projet mixte (Locaux + Diaspora). On ne construit pas <i>pour</i> eux, mais <i>avec</i> eux.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flex flex-col md:flex-row items-center mb-12 relative">
+                    <div class="md:w-1/2 md:pr-8 text-center md:text-right mb-4 md:mb-0">
+                        <h3 class="text-xl font-bold text-brand-primary">Lancement MVP</h3>
+                        <p class="text-gray-600 text-sm">Mise en ligne rapide d'une première version du portail. Montrer le mouvement, créer l'élan.</p>
+                    </div>
+                    <div class="timeline-point w-8 h-8 bg-brand-accent rounded-full border-4 border-white shadow-lg flex-shrink-0"></div>
+                    <div class="md:w-1/2 md:pl-8 hidden md:block"></div>
+                </div>
+
+                <!-- Target -->
+                <div class="bg-brand-dark text-white p-6 rounded-xl text-center shadow-2xl relative z-20 mx-4 md:mx-auto md:w-2/3">
+                    <div class="text-brand-highlight font-bold uppercase tracking-wider mb-2">Objectif Cible</div>
+                    <div class="text-3xl font-black mb-2">17 DÉCEMBRE 2025</div>
+                    <div class="text-sm opacity-80">Grande campagne lors de la Journée de la Diaspora</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: JOKKO Initiative (Plotly.js) -->
+    <section class="py-16 px-4 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                
+                <div>
+                    <h2 class="text-3xl font-bold text-brand-dark mb-4">6. Initiative JOKKO : Solidarité Nationale</h2>
+                    <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                        Au-delà de l'investissement individuel, nous proposons une contribution collective à la souveraineté. 
+                        <strong>L'Initiative Jokko Solidarity</strong> permet à la diaspora de participer volontairement à la réduction de la dette nationale.
+                    </p>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-brand-primary">
+                        <h4 class="font-bold text-brand-dark mb-2">Le Pilier : La Transparence Totale</h4>
+                        <p class="text-gray-600 text-sm">
+                            Chaque centime est tracé. Gestion pilotée via la plateforme du Guichet Unique avec des rapports publics en temps réel. Transformer l'émotion patriotique en poids financier réel.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Plotly Chart: Financial Impact Simulation -->
+                <div class="bg-white p-4 rounded-xl shadow-lg">
+                    <h4 class="text-center font-semibold text-gray-500 mb-2 text-sm uppercase">Simulation : Impact du Financement Participatif</h4>
+                    <div id="jokkoChart" class="w-full h-[350px]"></div>
+                    <p class="text-xs text-center text-gray-400 mt-2">Projection illustrative de l'allocation des fonds</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: AI Tools (GEMINI INTEGRATION) -->
+    <section class="py-16 px-4 bg-brand-primary text-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="bg-brand-highlight text-white text-xs font-bold uppercase px-3 py-1 rounded-full tracking-widest mb-2 inline-block">Nouveau</span>
+                <h2 class="text-3xl font-bold">7. L'Innovation IA en Action</h2>
+                <p class="text-sky-100 mt-2 max-w-2xl mx-auto">Découvrez comment l'Intelligence Artificielle "Gemini" va révolutionner l'accès aux services et à l'investissement pour la Diaspora.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Tool 1: Administrative Assistant Chatbot -->
+                <div class="bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[600px] text-gray-800">
+                    <div class="bg-gray-100 p-4 border-b border-gray-200 flex justify-between items-center">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                            <h3 class="font-bold text-brand-dark">Assistant Guichet Unique IA</h3>
+                        </div>
+                        <span class="text-xs text-gray-500">Propulsé par Gemini</span>
+                    </div>
+                    
+                    <!-- Chat Area -->
+                    <div id="chatContainer" class="chat-container p-4 bg-gray-50 flex-grow space-y-4">
+                        <div class="chat-ai chat-bubble">
+                            Bonjour! Je suis votre assistant virtuel pour le Guichet Unique. Comment puis-je vous aider aujourd'hui? (Ex: Passeport, Foncier, Investissement)
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="p-4 bg-white border-t border-gray-200">
+                        <div class="flex gap-2">
+                            <input type="text" id="chatInput" placeholder="Posez votre question ici..." class="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:border-brand-primary">
+                            <button onclick="sendMessage()" id="sendBtn" class="bg-brand-primary text-white rounded-full px-6 py-2 font-medium hover:bg-brand-dark transition-colors flex items-center gap-2">
+                                Envoyer <span id="sendSpinner" class="loader hidden" style="width: 15px; height: 15px; border-color: rgba(255,255,255,0.3); border-top-color: white;"></span> ✨
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 2: Investment Generator -->
+                <div class="space-y-6">
+                    <div class="bg-brand-dark p-8 rounded-2xl shadow-xl border border-blue-700">
+                        <h3 class="text-2xl font-bold mb-4 text-brand-highlight">Générateur d'Opportunités "Teranga Invest"</h3>
+                        <p class="text-sm text-blue-200 mb-6">Laissez l'IA analyser votre profil et vous proposer des micro-business plans adaptés au marché sénégalais actuel.</p>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-blue-300 mb-1">Secteur d'intérêt</label>
+                                <select id="investSector" class="w-full bg-blue-900 border border-blue-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-brand-highlight">
+                                    <option value="Agro-industrie">Agro-industrie & Transformation</option>
+                                    <option value="Technologie & Digital">Technologie & Digital</option>
+                                    <option value="Immobilier">Immobilier & Construction</option>
+                                    <option value="Tourisme">Tourisme & Loisirs</option>
+                                    <option value="Énergies Renouvelables">Énergies Renouvelables</option>
+                                    <option value="Transport">Transport & Logistique</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-blue-300 mb-1">Budget Estimé (FCFA)</label>
+                                <select id="investBudget" class="w-full bg-blue-900 border border-blue-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-brand-highlight">
+                                    <option value="1 à 5 Millions FCFA">Micro (1 - 5 Millions FCFA)</option>
+                                    <option value="5 à 20 Millions FCFA">Moyen (5 - 20 Millions FCFA)</option>
+                                    <option value="20 à 100 Millions FCFA">Important (20 - 100 Millions FCFA)</option>
+                                    <option value="Plus de 100 Millions FCFA">Institutionnel (+100 Millions FCFA)</option>
+                                </select>
+                            </div>
+
+                            <button onclick="generateInvestmentIdea()" id="investBtn" class="w-full bg-brand-highlight text-brand-dark font-bold rounded-lg px-6 py-4 hover:bg-white transition-colors mt-2 flex justify-center items-center gap-2">
+                                Générer mon Plan d'Investissement ✨ <span id="investSpinner" class="loader hidden" style="width: 15px; height: 15px; border-color: rgba(0,0,0,0.1); border-top-color: #1e3a8a;"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Result Area for Investment -->
+                    <div id="investResult" class="hidden bg-white text-gray-800 p-6 rounded-2xl shadow-lg border-l-4 border-brand-highlight animate-fade-in">
+                        <h4 class="font-bold text-xl text-brand-primary mb-2">Suggestion de l'IA :</h4>
+                        <div id="investContent" class="text-sm space-y-2 chat-ai p-0 bg-transparent border-0">
+                            <!-- Content will be injected here -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: SIMULATEUR DE DOUANE (EXISTING) -->
+    <section class="py-16 px-4 bg-gray-100">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-10">
+                <span class="bg-gray-800 text-white text-xs font-bold uppercase px-3 py-1 rounded-full tracking-widest mb-2 inline-block">Outil Pratique</span>
+                <h2 class="text-3xl font-bold text-brand-dark">8. Simulateur de Frais de Douane IA</h2>
+                <p class="text-gray-600 mt-2">Estimation instantanée des taxes à l'importation (Véhicules, Conteneurs, Marchandises).</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+                <div class="bg-brand-dark p-6 text-white">
+                    <h3 class="text-xl font-bold flex items-center">
+                        <span class="text-2xl mr-3">&#128666;</span> Expert Douanier Virtuel
+                    </h3>
+                    <p class="text-sm text-blue-200 opacity-80">Basé sur le Tarif Extérieur Commun (TEC) et la fiscalité sénégalaise.</p>
+                </div>
+                
+                <div class="p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Type de Marchandise</label>
+                            <input type="text" id="customsItem" placeholder="Ex: Véhicule Toyota RAV4 2018, Riz, Ordinateurs..." class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Valeur Estimée (FCFA ou Euro)</label>
+                            <input type="text" id="customsValue" placeholder="Ex: 5 000 000 FCFA" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary">
+                        </div>
+                    </div>
+                    
+                    <button onclick="calculateCustoms()" id="customsBtn" class="w-full bg-brand-primary text-white font-bold rounded-lg px-6 py-4 hover:bg-brand-dark transition-all flex justify-center items-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        Calculer les Taxes d'Importation <span id="customsSpinner" class="loader hidden" style="width: 15px; height: 15px; border-color: rgba(255,255,255,0.3); border-top-color: white;"></span>
+                    </button>
+
+                    <!-- Result Area -->
+                    <div id="customsResult" class="hidden mt-8 bg-blue-50 border border-blue-100 rounded-xl p-6 animate-fade-in">
+                        <div class="flex items-center justify-between mb-4 border-b border-blue-200 pb-2">
+                            <h4 class="font-bold text-lg text-brand-dark">Estimation Détaillée</h4>
+                            <span class="text-xs bg-brand-highlight text-white px-2 py-1 rounded">Simulation IA</span>
+                        </div>
+                        <div id="customsContent" class="chat-ai bg-transparent border-0 p-0 text-sm">
+                            <!-- Content injected here -->
+                        </div>
+                        <p class="text-xs text-gray-500 mt-4 italic text-center">*Ceci est une estimation à titre indicatif générée par IA. Seule la quittance officielle de la Douane fait foi.*</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: LANGUAGE BRIDGE (NEW FEATURE) -->
+    <section class="py-16 px-4 bg-brand-accent text-white">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-10">
+                <span class="bg-white text-brand-accent text-xs font-bold uppercase px-3 py-1 rounded-full tracking-widest mb-2 inline-block">Integration Culturelle</span>
+                <h2 class="text-3xl font-bold">9. Passerelle Linguistique & Culturelle</h2>
+                <p class="text-blue-100 mt-2 max-w-2xl mx-auto">Un pont entre l'administration formelle et la réalité culturelle. Traduisez et comprenez les nuances (Wolof <-> Français).</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl p-6 text-gray-800 flex flex-col md:flex-row gap-6">
+                <!-- Input Side -->
+                <div class="flex-1 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <label class="text-sm font-bold text-gray-500 uppercase">Texte à traduire / expliquer</label>
+                        <select id="transLang" class="text-xs bg-gray-100 border border-gray-300 rounded px-2 py-1 focus:outline-none">
+                            <option value="fr-wolof">Français vers Wolof (Expliqué)</option>
+                            <option value="wolof-fr">Wolof vers Français (Administratif)</option>
+                        </select>
+                    </div>
+                    <textarea id="transInput" rows="6" class="w-full border border-gray-300 rounded-lg p-4 focus:border-brand-accent focus:ring-1 focus:ring-brand-accent focus:outline-none resize-none" placeholder="Ex: Collez ici un extrait de décret ou une expression locale..."></textarea>
+                    <button onclick="translateText()" id="transBtn" class="w-full bg-brand-accent text-white font-bold py-3 rounded-lg hover:bg-brand-primary transition-colors flex justify-center items-center gap-2">
+                        Traduire & Contextualiser ✨ <span id="transSpinner" class="loader hidden" style="width: 15px; height: 15px; border-color: rgba(255,255,255,0.3); border-top-color: white;"></span>
+                    </button>
+                </div>
+
+                <!-- Output Side -->
+                <div class="flex-1 bg-gray-50 rounded-xl border border-gray-200 p-6 relative">
+                    <div class="absolute top-4 right-4 text-brand-accent opacity-20 text-6xl font-black">Aa</div>
+                    <h4 class="font-bold text-brand-primary mb-4">Résultat & Contexte Culturel :</h4>
+                    <div id="transContent" class="chat-ai bg-transparent border-0 p-0 text-sm leading-relaxed">
+                        <p class="text-gray-400 italic">La traduction s'affichera ici...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 10: MAP VISUALIZATION (MOVED TO LAST) -->
+    <section class="py-16 px-4 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-brand-dark">10. Le Projet Diaspora City : Cartographie</h2>
+                <p class="text-gray-600 mt-2">Projection interactive de la future ville connectée à Diamniadio.</p>
+            </div>
+            
+            <div class="bg-white p-2 rounded-xl shadow-2xl border border-gray-200 relative">
+                <div id="mapDiaspora"></div>
+                
+                <!-- Map Legend Overlay -->
+                <div class="absolute bottom-6 right-6 bg-white bg-opacity-90 p-4 rounded-lg shadow-lg z-[1000] text-sm hidden md:block">
+                    <h4 class="font-bold text-brand-dark mb-2">Zones Stratégiques</h4>
+                    <div class="flex items-center mb-1"><span class="w-3 h-3 rounded-full bg-blue-500 mr-2"></span> Résidentiel (Teranga)</div>
+                    <div class="flex items-center mb-1"><span class="w-3 h-3 rounded-full bg-amber-500 mr-2"></span> Hub Technologique</div>
+                    <div class="flex items-center mb-1"><span class="w-3 h-3 rounded-full bg-red-500 mr-2"></span> Centre Administratif</div>
+                    <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-green-500 mr-2"></span> Espaces Verts</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion -->
+    <footer class="bg-brand-dark text-white py-12 px-4 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-6">Le Défi de la Volonté</h2>
+            <p class="text-lg text-blue-200 mb-8 leading-relaxed">
+                Le plan est sur la table. La machine est conçue. Il ne s'agit plus de savoir "comment faire", mais d'avoir le courage politique d'appuyer sur le bouton "Marche" sans jamais le remettre sur pause.
+            </p>
+            <div class="inline-block border-2 border-brand-highlight text-brand-highlight px-8 py-3 rounded-full font-bold uppercase tracking-widest">
+                Ensemble, refondons le pacte
+            </div>
+            <p class="mt-12 text-xs text-gray-500">© 2025 Analyse Stratégique - Relation État/Diaspora</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // --- GEMINI API CONFIGURATION ---
+        const apiKey = ""; // Provided by runtime environment
+        
+        // System Prompts
+        const chatSystemPrompt = `
+            Tu es l'Assistant Virtuel IA du "Guichet Unique Sénégal-Diaspora".
+            Ton rôle est d'aider les Sénégalais de l'extérieur avec des réponses précises, empathiques et utiles.
+            
+            Contexte :
+            - Tu aides sur les démarches (Passeport, CNI, Foncier, Douane).
+            - Tu es poli, professionnel mais chaleureux (Teranga).
+            - Tes réponses doivent être structurées (listes à puces si nécessaire).
+            - Si on te pose une question hors sujet, ramène poliment le sujet au Sénégal et à la Diaspora.
+            
+            Format de réponse : Markdown simple. Court et concis (max 150 mots).
+        `;
+
+        const investSystemPrompt = `
+            Tu es un Expert en Investissement pour le Sénégal ("Teranga Invest Advisor").
+            Ton but est de proposer une idée de business concrète et viable au Sénégal.
+            
+            En te basant sur le SECTEUR et le BUDGET fournis :
+            1. Propose UNE idée spécifique de business (Titre accrocheur).
+            2. Donne 3 points clés pour démarrer (Roadmap rapide).
+            3. Estime un ROI (Retour sur Investissement) potentiel réaliste mais encourageant.
+            
+            Format de réponse : HTML structuré simple (<h3>, <ul>, <li>, <strong>).
+            Ton ton doit être encourageant et visionnaire.
+        `;
+
+        const customsSystemPrompt = `
+            Tu es un Expert Douanier Sénégalais Virtuel.
+            Ton rôle est d'estimer les frais de dédouanement pour l'importation de marchandises au Sénégal.
+            
+            Règles de calcul (Approximations pour simulation) :
+            1. Base-toi sur les catégories standards du TEC (Tarif Extérieur Commun de la CEDEAO).
+            2. Inclus généralement : 
+               - Droits de Douane (DD) : souvent 20% pour produits finis, 35% pour biens spécifiques.
+               - Redevance Statistique (RS) : 1%.
+               - Prélèvement Communautaire (PCS + PC) : ~1.5%.
+               - TVA : 18%.
+            3. Pour les véhicules, mentionne la spécificité de l'âge (max 8 ans pour tourisme).
+            
+            Action :
+            Reçois : Type de produit et Valeur.
+            Génère : Un tableau HTML simple avec le détail des taxes estimées et le TOTAL GLOBAL en FCFA.
+            Ajoute un bref conseil douanier à la fin.
+        `;
+
+        const translatorSystemPrompt = `
+            Tu es un Expert Linguiste et Culturel (Wolof/Français).
+            Ton rôle est de servir de pont entre l'administration et la culture locale.
+            
+            Si la direction est Français -> Wolof :
+            - Traduis le texte administratif en Wolof clair et accessible (Wolofal moderne).
+            - Explique les concepts compliqués (ex: Titre Foncier, Hypothèque) avec des analogies locales.
+            
+            Si la direction est Wolof -> Français :
+            - Traduis le texte en Français administratif formel.
+            - Si le texte contient des notions culturelles (ex: "Maslaha", "Teranga", "Jokko"), explique leur implication dans un contexte formel.
+            
+            Format de réponse : 
+            **Traduction :** [Texte traduit]
+            **Note Culturelle/Explicative :** [Brève explication utile pour le contexte]
+            
+            Reste respectueux et précis.
+        `;
+
+        // --- GEMINI CALL FUNCTION ---
+        async function callGeminiAPI(userPrompt, systemInstruction) {
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: userPrompt }]
+                        }],
+                        systemInstruction: {
+                            parts: [{ text: systemInstruction }]
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data.candidates[0].content.parts[0].text;
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                return "Désolé, je rencontre une erreur de connexion momentanée. Veuillez réessayer.";
+            }
+        }
+
+        // --- FEATURE 1: CHATBOT LOGIC ---
+        const chatInput = document.getElementById('chatInput');
+        const chatContainer = document.getElementById('chatContainer');
+        const sendBtn = document.getElementById('sendBtn');
+        const sendSpinner = document.getElementById('sendSpinner');
+
+        async function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            appendMessage(text, 'user');
+            chatInput.value = '';
+            sendBtn.disabled = true;
+            sendSpinner.classList.remove('hidden');
+            const aiResponseRaw = await callGeminiAPI(text, chatSystemPrompt);
+            const aiResponseHTML = marked.parse(aiResponseRaw);
+            appendMessage(aiResponseHTML, 'ai', true);
+            sendBtn.disabled = false;
+            sendSpinner.classList.add('hidden');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function appendMessage(content, sender, isHTML = false) {
+            const div = document.createElement('div');
+            div.className = `chat-bubble chat-${sender}`;
+            if (isHTML) {
+                div.innerHTML = content;
+            } else {
+                div.textContent = content;
+            }
+            chatContainer.appendChild(div);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        chatInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+
+        // --- FEATURE 2: INVESTMENT GENERATOR LOGIC ---
+        const investBtn = document.getElementById('investBtn');
+        const investSpinner = document.getElementById('investSpinner');
+        const investResult = document.getElementById('investResult');
+        const investContent = document.getElementById('investContent');
+
+        async function generateInvestmentIdea() {
+            const sector = document.getElementById('investSector').value;
+            const budget = document.getElementById('investBudget').value;
+            const prompt = `Je veux investir dans le secteur : ${sector}. Mon budget est : ${budget}. Donne-moi une idée de business.`;
+            investBtn.disabled = true;
+            investSpinner.classList.remove('hidden');
+            investResult.classList.add('hidden');
+            const resultHTML = await callGeminiAPI(prompt, investSystemPrompt);
+            const cleanHTML = resultHTML.replace(/```html/g, '').replace(/```/g, ''); 
+            investContent.innerHTML = marked.parse(cleanHTML); 
+            investResult.classList.remove('hidden');
+            investBtn.disabled = false;
+            investSpinner.classList.add('hidden');
+        }
+
+        // --- FEATURE 3: CUSTOMS SIMULATOR LOGIC (EXISTING) ---
+        const customsBtn = document.getElementById('customsBtn');
+        const customsSpinner = document.getElementById('customsSpinner');
+        const customsResult = document.getElementById('customsResult');
+        const customsContent = document.getElementById('customsContent');
+
+        async function calculateCustoms() {
+            const item = document.getElementById('customsItem').value;
+            const value = document.getElementById('customsValue').value;
+            
+            if(!item || !value) {
+                alert("Veuillez remplir le type de marchandise et la valeur.");
+                return;
+            }
+
+            const prompt = `Estime les frais de douane pour l'importation suivante au Sénégal : Produit = ${item}, Valeur = ${value}.`;
+
+            customsBtn.disabled = true;
+            customsSpinner.classList.remove('hidden');
+            customsResult.classList.add('hidden');
+
+            const resultHTML = await callGeminiAPI(prompt, customsSystemPrompt);
+            const cleanHTML = resultHTML.replace(/```html/g, '').replace(/```/g, '');
+            customsContent.innerHTML = marked.parse(cleanHTML);
+            
+            customsResult.classList.remove('hidden');
+            customsBtn.disabled = false;
+            customsSpinner.classList.add('hidden');
+        }
+
+        // --- FEATURE 4: LANGUAGE TRANSLATOR LOGIC (NEW) ---
+        const transBtn = document.getElementById('transBtn');
+        const transSpinner = document.getElementById('transSpinner');
+        const transContent = document.getElementById('transContent');
+        const transInput = document.getElementById('transInput');
+        const transLang = document.getElementById('transLang');
+
+        async function translateText() {
+            const text = transInput.value.trim();
+            const direction = transLang.value;
+            
+            if(!text) {
+                alert("Veuillez entrer un texte à traduire.");
+                return;
+            }
+
+            const prompt = `Traduction demandée (${direction}) pour le texte suivant : "${text}"`;
+
+            transBtn.disabled = true;
+            transSpinner.classList.remove('hidden');
+            transContent.innerHTML = '<p class="text-gray-400 italic">Analyse en cours...</p>';
+
+            const resultHTML = await callGeminiAPI(prompt, translatorSystemPrompt);
+            const cleanHTML = resultHTML.replace(/```html/g, '').replace(/```/g, '');
+            
+            transContent.innerHTML = marked.parse(cleanHTML);
+            
+            transBtn.disabled = false;
+            transSpinner.classList.add('hidden');
+        }
+
+        // --- FEATURE 5: LEAFLET MAP LOGIC (DIASPORA CITY) ---
+        // Initialize Map centered on Diamniadio area (approx coords)
+        const map = L.map('mapDiaspora').setView([14.743, -17.185], 14);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
+        }).addTo(map);
+
+        const resCircle = L.circle([14.745, -17.190], { color: '#3b82f6', fillColor: '#3b82f6', fillOpacity: 0.5, radius: 400 }).addTo(map);
+        resCircle.bindPopup("<b>Zone Résidentielle Teranga</b><br>Appartements modernes et villas connectées.");
+
+        const techCircle = L.circle([14.740, -17.180], { color: '#f59e0b', fillColor: '#f59e0b', fillOpacity: 0.5, radius: 300 }).addTo(map);
+        techCircle.bindPopup("<b>Dakar Silicon Hub</b><br>Incubateurs, coworking et sièges tech.");
+
+        const adminCircle = L.circle([14.750, -17.182], { color: '#ef4444', fillColor: '#ef4444', fillOpacity: 0.5, radius: 250 }).addTo(map);
+        adminCircle.bindPopup("<b>Guichet Unique Physique</b><br>Le cœur administratif : tout en un seul lieu.");
+
+         const greenCircle = L.circle([14.735, -17.195], { color: '#22c55e', fillColor: '#22c55e', fillOpacity: 0.5, radius: 500 }).addTo(map);
+        greenCircle.bindPopup("<b>Parc de la Renaissance</b><br>Espaces verts et loisirs familiaux.");
+
+
+        // --- EXISTING CHARTS LOGIC (UNCHANGED) ---
+        function splitLabel(str, maxLen = 16) {
+            if (str.length <= maxLen) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + 1 + words[i].length <= maxLen) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const ctxPassport = document.getElementById('passportCostChart').getContext('2d');
+        const rawLabelsPassport = ["Coût Local (Sénégal)", "Diaspora (USA - Actuel)", "Diaspora (USA - Guichet Unique)"];
+        const processedLabelsPassport = rawLabelsPassport.map(l => splitLabel(l));
+
+        new Chart(ctxPassport, {
+            type: 'bar',
+            data: {
+                labels: processedLabelsPassport,
+                datasets: [{
+                    label: 'Coût Total Estimé ($)',
+                    data: [50, 1400, 70],
+                    backgroundColor: ['#0ea5e9', '#ef4444', '#f59e0b'],
+                    borderWidth: 0,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) return label.join(' ');
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Coût ($)' } } }
+            }
+        });
+
+        const ctxTrust = document.getElementById('trustGapChart').getContext('2d');
+        const rawLabelsTrust = ["Sécurité Immobilière", "Rapidité Administrative", "Support Social (Détenus)", "Facilité d'Investissement", "Accueil au Retour"];
+        const processedLabelsTrust = rawLabelsTrust.map(l => splitLabel(l));
+
+        new Chart(ctxTrust, {
+            type: 'radar',
+            data: {
+                labels: processedLabelsTrust,
+                datasets: [{
+                    label: 'Attentes de la Diaspora',
+                    data: [9, 9, 8, 9, 8],
+                    fill: true,
+                    backgroundColor: 'rgba(14, 165, 233, 0.2)',
+                    borderColor: '#0ea5e9',
+                    pointBackgroundColor: '#0ea5e9',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#0ea5e9'
+                }, {
+                    label: 'Réalité Actuelle',
+                    data: [2, 1, 1, 3, 2],
+                    fill: true,
+                    backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                    borderColor: '#ef4444',
+                    pointBackgroundColor: '#ef4444',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#ef4444'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                elements: { line: { borderWidth: 3 } },
+                scales: {
+                    r: {
+                        angleLines: { display: true },
+                        suggestedMin: 0,
+                        suggestedMax: 10,
+                        grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                        pointLabels: { font: { size: 11, family: "'Roboto', sans-serif" } }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) return label.join(' ');
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        var trace1 = {
+            x: ['Dette Nationale', 'Infrastructures Santé', 'Éducation Numérique', 'Fonds d\'Urgence'],
+            y: [40, 30, 20, 10],
+            name: 'Allocation',
+            type: 'bar',
+            marker: { color: ['#1e3a8a', '#0369a1', '#0ea5e9', '#f59e0b'] }
+        };
+
+        var dataPlotly = [trace1];
+        var layoutPlotly = {
+            title: { text: 'Répartition Cible des Fonds Jokko', font: { family: 'Roboto', size: 16, color: '#1e3a8a' } },
+            font: { family: 'Roboto' },
+            showlegend: false,
+            autosize: true,
+            margin: { l: 40, r: 20, t: 40, b: 40 },
+            xaxis: { tickfont: { size: 11 } },
+            yaxis: { title: 'Pourcentage (%)' },
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)'
+        };
+        var configPlotly = { responsive: true, displayModeBar: false };
+
+        Plotly.newPlot('jokkoChart', dataPlotly, layoutPlotly, configPlotly);
+
+    </script>
+</body>
+</html>
