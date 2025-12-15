@@ -1,2 +1,2 @@
-# Preentation-Jokko
+# Presentation-Jokko
 Presentation Jokko Solidarity Initiative
