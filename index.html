@@ -10,10 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Plotly.js -->
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-    <!-- Leaflet CSS (Maps) -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <!-- FontAwesome -->
@@ -45,21 +41,10 @@
             height: 350px;
             max-height: 400px;
         }
-
-        /* Map Container */
-        #mapDiaspora {
-            height: 500px;
-            width: 100%;
-            border-radius: 0.75rem;
-            z-index: 1; /* Ensure it stays below dropdowns if any */
-        }
         
         @media (max-width: 768px) {
             .chart-container {
                 height: 300px;
-            }
-            #mapDiaspora {
-                height: 350px;
             }
         }
 
@@ -308,7 +293,7 @@
                 </div>
 
                 <!-- Target -->
-                <div class="bg-brand-dark text-white p-6 rounded-xl text-center shadow-2xl relative z-20 mx-4 md:mx-auto md:w-2/3 border border-brand-highlight">
+                <div class="bg-brand-dark text-white p-6 rounded-xl text-center shadow-2xl relative z-20 mx-4 md:mx-auto md:w-2/3">
                     <div class="text-brand-highlight font-bold uppercase tracking-wider mb-2">Objectif Cible</div>
                     <div class="text-3xl font-black mb-2">17 DÉCEMBRE 2025</div>
                     <div class="text-sm opacity-80">Grande campagne lors de la Journée de la Diaspora</div>
@@ -343,29 +328,6 @@
                     <p class="text-xs text-center text-gray-400 mt-2">Projection illustrative de l'allocation des fonds</p>
                 </div>
 
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 7: MAP VISUALIZATION (LEAFLET) -->
-    <section class="py-16 px-4 bg-white">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-bold text-brand-dark">7. Le Projet Diaspora City : Cartographie</h2>
-                <p class="text-gray-600 mt-2">Projection interactive de la future ville connectée à Diamniadio.</p>
-            </div>
-            
-            <div class="bg-white p-2 rounded-xl shadow-2xl border border-gray-200 relative">
-                <div id="mapDiaspora"></div>
-                
-                <!-- Map Legend Overlay -->
-                <div class="absolute bottom-6 right-6 bg-white bg-opacity-90 p-4 rounded-lg shadow-lg z-[1000] text-sm hidden md:block">
-                    <h4 class="font-bold text-brand-dark mb-2">Zones Stratégiques</h4>
-                    <div class="flex items-center mb-1"><span class="w-3 h-3 rounded-full bg-blue-500 mr-2"></span> Résidentiel (Teranga)</div>
-                    <div class="flex items-center mb-1"><span class="w-3 h-3 rounded-full bg-amber-500 mr-2"></span> Hub Technologique</div>
-                    <div class="flex items-center mb-1"><span class="w-3 h-3 rounded-full bg-red-500 mr-2"></span> Centre Administratif</div>
-                    <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-green-500 mr-2"></span> Espaces Verts</div>
-                </div>
             </div>
         </div>
     </section>
@@ -524,7 +486,6 @@
         };
 
         var dataPlotly = [trace1];
-
         var layoutPlotly = {
             title: {
                 text: 'Répartition Cible des Fonds Jokko',
@@ -543,14 +504,9 @@
             paper_bgcolor: 'rgba(0,0,0,0)',
             plot_bgcolor: 'rgba(0,0,0,0)'
         };
-
-        var configPlotly = {
-            responsive: true,
-            displayModeBar: false
-        };
+        var configPlotly = { responsive: true, displayModeBar: false };
 
         Plotly.newPlot('jokkoChart', dataPlotly, layoutPlotly, configPlotly);
-
 
     </script>
 </body>
