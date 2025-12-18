@@ -4,15 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Le Pacte : Sénégal & Diaspora - Une Nouvelle Ère</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Plotly.js -->
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -48,25 +43,27 @@
             }
         }
 
-        /* Timeline Styling */
+        /* Timeline Styling - CORRIGÉ */
         .timeline-line {
             position: absolute;
             left: 50%;
-            top: 0;
-            bottom: 0;
+            /* Ajustement du haut et du bas pour centrer la ligne sur les points et éviter les dépassements */
+            top: 2.5rem; 
+            bottom: 7rem;
             width: 4px;
             background-color: #0ea5e9;
             transform: translateX(-50%);
+            z-index: 0; /* S'assure que la ligne est derrière les points */
         }
         
         .timeline-point {
-            z-index: 10;
+            position: relative; /* Nécessaire pour le z-index */
+            z-index: 10; /* S'assure que le point est devant la ligne */
         }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Header / Hook -->
     <header class="bg-brand-dark text-white py-20 px-4 shadow-lg relative overflow-hidden">
         <div class="absolute top-0 right-0 opacity-5 text-[15rem] font-bold -mr-10 -mt-10 select-none">SN</div>
         <div class="max-w-6xl mx-auto text-center relative z-10">
@@ -79,7 +76,6 @@
         </div>
     </header>
 
-    <!-- Section 1: The Diagnosis (Chart.js) -->
     <section class="py-16 px-4 max-w-7xl mx-auto">
         <div class="mb-10 text-center">
             <h2 class="text-3xl font-bold text-brand-dark mb-4">1. Le Diagnostic : Un besoin d'optimisation des process</h2>
@@ -88,7 +84,6 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <!-- Text Content -->
             <div class="bg-white p-8 rounded-xl shadow-md border-l-4 border-brand-highlight">
                 <h3 class="text-2xl font-bold mb-4 text-brand-primary">L'Exemple des Difficultés Administratives</h3>
                 <p class="mb-4 text-gray-700">
@@ -113,7 +108,6 @@
                 </div>
             </div>
 
-            <!-- Visualization: Cost Comparison -->
             <div class="bg-white p-6 rounded-xl shadow-md">
                 <h4 class="text-center font-semibold text-gray-500 mb-4 uppercase text-sm">Comparatif du Coût Réel : Démarche Administrative</h4>
                 <div class="chart-container">
@@ -124,7 +118,6 @@
         </div>
     </section>
 
-    <!-- Section 2: Areas of Impact (Chart.js Radar) -->
     <section class="py-16 px-4 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="mb-10 text-center">
@@ -141,22 +134,19 @@
                 
                 <div class="order-1 md:order-2 space-y-6">
                     <div class="flex items-start p-4 bg-blue-50 rounded-lg">
-                        <span class="text-3xl mr-4">&#127968;</span> <!-- House unicode -->
-                        <div>
+                        <span class="text-3xl mr-4">&#127968;</span> <div>
                             <h4 class="font-bold text-brand-primary text-xl">L'Immobilier & Le Foncier</h4>
                             <p class="text-gray-700">Le projet d'une vie transformé en source d'angoisse. Titres superposés, absence de vérification en ligne, escroqueries impunies.</p>
                         </div>
                     </div>
                     <div class="flex items-start p-4 bg-blue-50 rounded-lg">
-                        <span class="text-3xl mr-4">&#128104;&#8205;&#9878;&#65039;</span> <!-- Judge/Legal unicode -->
-                        <div>
+                        <span class="text-3xl mr-4">&#128104;&#8205;&#9878;&#65039;</span> <div>
                             <h4 class="font-bold text-brand-primary text-xl">Protection Sociale & Juridique</h4>
                             <p class="text-gray-700">Des détenus isolés sans visite possible faute d'autorisation consulaire. Un sentiment d'abandon total dans les moments de crise.</p>
                         </div>
                     </div>
                     <div class="flex items-start p-4 bg-blue-50 rounded-lg">
-                        <span class="text-3xl mr-4">&#128188;</span> <!-- Briefcase unicode -->
-                        <div>
+                        <span class="text-3xl mr-4">&#128188;</span> <div>
                             <h4 class="font-bold text-brand-primary text-xl">Retour & Réintégration</h4>
                             <p class="text-gray-700">Des talents prêts à rentrer mais bloqués par un vide structurel. Pas d'accueil, pas d'orientation, des barrières culturelles énormes.</p>
                         </div>
@@ -166,7 +156,6 @@
         </div>
     </section>
 
-    <!-- Section 3: Strategic Plan (HTML Grid) -->
     <section class="py-16 px-4 bg-brand-dark text-white">
         <div class="max-w-7xl mx-auto text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">3. La Riposte Stratégique : Le Guichet Unique</h2>
@@ -176,37 +165,29 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            <!-- Card 1 -->
             <div class="bg-white text-brand-dark p-6 rounded-lg shadow-xl hover:-translate-y-2 transition-transform duration-300">
-                <div class="text-4xl mb-4 text-brand-highlight">&#128737;&#65039;</div> <!-- Shield unicode -->
-                <h3 class="font-bold text-xl mb-3 border-b-2 border-brand-highlight pb-2">Sécurisation Juridique</h3>
+                <div class="text-4xl mb-4 text-brand-highlight">&#128737;&#65039;</div> <h3 class="font-bold text-xl mb-3 border-b-2 border-brand-highlight pb-2">Sécurisation Juridique</h3>
                 <p class="text-sm leading-relaxed">
                     Création d'une liste blanche de promoteurs certifiés et d'une cellule d'investigation dédiée. La Guerre sera déclarée à l'impunité foncière.
                 </p>
             </div>
 
-            <!-- Card 2 -->
             <div class="bg-white text-brand-dark p-6 rounded-lg shadow-xl hover:-translate-y-2 transition-transform duration-300">
-                <div class="text-4xl mb-4 text-brand-highlight">&#127959;&#65039;</div> <!-- Cityscape unicode -->
-                <h3 class="font-bold text-xl mb-3 border-b-2 border-brand-highlight pb-2">Habitat & Urbanisme</h3>
+                <div class="text-4xl mb-4 text-brand-highlight">&#127959;&#65039;</div> <h3 class="font-bold text-xl mb-3 border-b-2 border-brand-highlight pb-2">Habitat & Urbanisme</h3>
                 <p class="text-sm leading-relaxed">
                     Accès direct au registre foncier numérique. Lancement de "Diaspora City" : un aménagement urbain pensé pour et avec la diaspora.
                 </p>
             </div>
 
-            <!-- Card 3 -->
             <div class="bg-white text-brand-dark p-6 rounded-lg shadow-xl hover:-translate-y-2 transition-transform duration-300">
-                <div class="text-4xl mb-4 text-brand-highlight">&#128200;</div> <!-- Chart Increasing unicode -->
-                <h3 class="font-bold text-xl mb-3 border-b-2 border-brand-highlight pb-2">Investissement</h3>
+                <div class="text-4xl mb-4 text-brand-highlight">&#128200;</div> <h3 class="font-bold text-xl mb-3 border-b-2 border-brand-highlight pb-2">Investissement</h3>
                 <p class="text-sm leading-relaxed">
                     Bureau d'investissement dédié pour accompagner les entrepreneurs. Ce qui facilitera la navigation dans les complexités locales et fiscales.
                 </p>
             </div>
 
-            <!-- Card 4 -->
             <div class="bg-white text-brand-dark p-6 rounded-lg shadow-xl hover:-translate-y-2 transition-transform duration-300">
-                <div class="text-4xl mb-4 text-brand-highlight">&#128187;</div> <!-- Computer unicode -->
-                <h3 class="font-bold text-xl mb-3 border-b-2 border-brand-highlight pb-2">Services Sociaux</h3>
+                <div class="text-4xl mb-4 text-brand-highlight">&#128187;</div> <h3 class="font-bold text-xl mb-3 border-b-2 border-brand-highlight pb-2">Services Sociaux</h3>
                 <p class="text-sm leading-relaxed">
                     Plateforme 100% en ligne pour passeports/CNI. Facilitation des autorisations consulaires urgentes (rapatriements, visites).
                 </p>
@@ -214,7 +195,6 @@
         </div>
     </section>
 
-    <!-- Section 4: Operational Model (HTML Flow) -->
     <section class="py-14 px-4 max-w-6xl mx-auto">
         <div class="text-center mb-10">
             <h2 class="text-3xl font-bold text-brand-dark">4. Le Modèle "Phygital"</h2>
@@ -223,8 +203,7 @@
 
         <div class="flex flex-col md:flex-row gap-8 justify-center items-stretch">
             <div class="flex-1 bg-gradient-to-br from-blue-600 to-blue-800 text-white p-8 rounded-2xl shadow-lg relative overflow-hidden">
-                <div class="absolute top-0 right-0 text-9xl opacity-10 pointer-events-none">&#127963;</div> <!-- Building -->
-                <h3 class="text-2xl font-bold mb-4">Le Centre Physique (Dakar)</h3>
+                <div class="absolute top-0 right-0 text-9xl opacity-10 pointer-events-none">&#127963;</div> <h3 class="text-2xl font-bold mb-4">Le Centre Physique (Dakar)</h3>
                 <p class="mb-4 text-blue-100">Un lieu identifiable, symbole de l'engagement de l'État.</p>
                 <ul class="space-y-2 text-sm font-light">
                     <li>&#10004; Accueil humain et personnalisé</li>
@@ -238,8 +217,7 @@
             </div>
 
             <div class="flex-1 bg-gradient-to-br from-cyan-500 to-blue-500 text-white p-8 rounded-2xl shadow-lg relative overflow-hidden">
-                <div class="absolute top-0 right-0 text-9xl opacity-10 pointer-events-none">&#128241;</div> <!-- Mobile -->
-                <h3 class="text-2xl font-bold mb-4">La Plateforme Digitale</h3>
+                <div class="absolute top-0 right-0 text-9xl opacity-10 pointer-events-none">&#128241;</div> <h3 class="text-2xl font-bold mb-4">La Plateforme Digitale</h3>
                 <p class="mb-4 text-blue-100">Accessible 24/7 depuis n'importe où dans le monde.</p>
                 <ul class="space-y-2 text-sm font-light">
                     <li>&#10004; Dématérialisation totale des démarches</li>
@@ -250,7 +228,6 @@
         </div>
     </section>
 
-    <!-- Section 5: Roadmap (HTML Timeline) -->
     <section class="py-12 px-4 bg-white">
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-12">
@@ -261,7 +238,6 @@
             <div class="relative py-8">
                 <div class="timeline-line hidden md:block"></div>
 
-                <!-- Step 1 -->
                 <div class="flex flex-col md:flex-row items-center mb-12 relative">
                     <div class="md:w-1/2 md:pr-8 text-center md:text-right mb-4 md:mb-0">
                         <h3 class="text-xl font-bold text-brand-primary">L'Acte Politique</h3>
@@ -271,7 +247,6 @@
                     <div class="md:w-1/2 md:pl-8 hidden md:block"></div>
                 </div>
 
-                <!-- Step 2 -->
                 <div class="flex flex-col md:flex-row items-center mb-12 relative">
                     <div class="md:w-1/2 md:pr-8 hidden md:block"></div>
                     <div class="timeline-point w-8 h-8 bg-brand-primary rounded-full border-4 border-white shadow-lg flex-shrink-0"></div>
@@ -281,7 +256,6 @@
                     </div>
                 </div>
 
-                <!-- Step 3 -->
                 <div class="flex flex-col md:flex-row items-center mb-12 relative">
                     <div class="md:w-1/2 md:pr-8 text-center md:text-right mb-4 md:mb-0">
                         <h3 class="text-xl font-bold text-brand-primary">Lancement MVP</h3>
@@ -291,7 +265,6 @@
                     <div class="md:w-1/2 md:pl-8 hidden md:block"></div>
                 </div>
 
-                <!-- Target -->
                 <div class="bg-brand-dark text-white p-6 rounded-xl text-center shadow-2xl relative z-20 mx-4 md:mx-auto md:w-2/3">
                     <div class="text-brand-highlight font-bold uppercase tracking-wider mb-2">Objectif Cible</div>
                     <div class="text-3xl font-black mb-2">17 DÉCEMBRE 2025</div>
@@ -301,7 +274,6 @@
         </div>
     </section>
 
-    <!-- Section 6: JOKKO Initiative (Plotly.js) -->
     <section class="py-16 px-4 bg-gray-50">
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -320,7 +292,6 @@
                     </div>
                 </div>
 
-                <!-- Plotly Chart: Financial Impact Simulation -->
                 <div class="bg-white p-4 rounded-xl shadow-lg">
                     <h4 class="text-center font-semibold text-gray-500 mb-2 text-sm uppercase">Simulation : Impact du Financement Participatif</h4>
                     <div id="jokkoChart" class="w-full h-[350px]"></div>
@@ -331,7 +302,6 @@
         </div>
     </section>
 
-    <!-- Conclusion -->
     <footer class="bg-brand-dark text-white py-12 px-4 text-center">
         <div class="max-w-4xl mx-auto">
             <h2 class="text-3xl font-bold mb-6">Le Défi de la Volonté</h2>
@@ -341,11 +311,13 @@
             <div class="inline-block border-2 border-brand-highlight text-brand-highlight px-8 py-3 rounded-full font-bold uppercase tracking-widest">
                 Ensemble, refondons le pacte
             </div>
-            <p class="mt-12 text-xs text-gray-500">© 2025 Analyse Stratégique - Relation État/Diaspora</p>
+            <p class="mt-12 text-sm text-blue-300 leading-relaxed">
+                Proactiv GRC Khadim THIAM<br>
+                © 2025 Analyse Stratégique - Relation État/Diaspora
+            </p>
         </div>
     </footer>
 
-    <!-- SCRIPTS -->
     <script>
         // --- UTILITY: Label Splitter for Chart.js (Max 16 chars) ---
         function splitLabel(str, maxLen = 16) {
