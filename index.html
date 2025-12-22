@@ -13,20 +13,19 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f0f9ff; /* Light blue tint */
-            color: #1e3a8a; /* Deep Blue text */
+            background-color: #f0f9ff;
+            color: #1e3a8a;
         }
         
-        /* Palette Definitions */
-        .bg-brand-dark { background-color: #1e3a8a; } /* Deep Royal Blue */
-        .bg-brand-primary { background-color: #0369a1; } /* Rich Blue */
-        .bg-brand-accent { background-color: #0ea5e9; } /* Sky Blue */
-        .bg-brand-highlight { background-color: #f59e0b; } /* Gold/Amber */
+        /* Palette */
+        .bg-brand-dark { background-color: #1e3a8a; }
+        .bg-brand-primary { background-color: #0369a1; }
+        .bg-brand-accent { background-color: #0ea5e9; }
+        .bg-brand-highlight { background-color: #f59e0b; }
         .text-brand-dark { color: #1e3a8a; }
         .text-brand-primary { color: #0369a1; }
         .text-brand-accent { color: #0ea5e9; }
         
-        /* Chart Container Strict Styling */
         .chart-container {
             position: relative;
             width: 100%;
@@ -38,27 +37,25 @@
         }
         
         @media (max-width: 768px) {
-            .chart-container {
-                height: 300px;
-            }
+            .chart-container { height: 300px; }
         }
 
-        /* Timeline Styling - CORRIGÉ */
+        /* --- CORRECTION TIMELINE --- */
+        /* La ligne s'étend maintenant de tout en haut (top:0) à tout en bas (bottom:0) du conteneur relatif */
         .timeline-line {
             position: absolute;
             left: 50%;
-            /* Ajustement du haut et du bas pour centrer la ligne sur les points et éviter les dépassements */
-            top: 2.5rem; 
-            bottom: 7rem;
+            top: 0;       /* Dépassement vers le haut (dans le padding du parent) */
+            bottom: 0;    /* Dépassement vers le bas (dans le padding du parent) */
             width: 4px;
             background-color: #0ea5e9;
             transform: translateX(-50%);
-            z-index: 0; /* S'assure que la ligne est derrière les points */
+            z-index: 0;   /* Derrière les éléments */
         }
         
         .timeline-point {
-            position: relative; /* Nécessaire pour le z-index */
-            z-index: 10; /* S'assure que le point est devant la ligne */
+            position: relative;
+            z-index: 10;  /* Devant la ligne */
         }
     </style>
 </head>
@@ -80,7 +77,8 @@
         <div class="mb-10 text-center">
             <h2 class="text-3xl font-bold text-brand-dark mb-4">1. Le Diagnostic : Un besoin d'optimisation des process</h2>
             <p class="text-gray-600 max-w-4xl mx-auto text-lg">
-                Le constat est sans appel : un fossé s'est creusé. Difficultés administratives, absence de digitalisation et insécurité foncière ont créé un sentiment de peur à l'investissement au pays. L'exemple le plus frappant reste le coût exorbitant pour la logistique pour un renouvellement de passeport dont à l'ère du numerique l'État doit plus que jamais rechercher une solution dématérialisée pour les demamcdes administratives de sa Diaspora. 
+                Le constat est sans appel : un fossé s'est creusé. Difficultés administratives, absence de digitalisation et insécurité foncière ont créé un sentiment de peur à l'investissement au pays. L'exemple le plus frappant reste le coût exorbitant pour la logistique pour un renouvellement de passeport dont à l'ère du numerique l'État doit plus que jamais rechercher une solution dématérialisée pour les demandes administratives de sa Diaspora. 
+            </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -104,7 +102,7 @@
                     </li>
                 </ul>
                 <div class="bg-red-50 p-4 rounded text-red-800 font-semibold text-center">
-                    "La question qui se pose est comment recréer un élan de confiance et de patriotisme en donnant une réponse aux causes de la Diaspora?
+                    "La question qui se pose est comment recréer un élan de confiance et de patriotisme en donnant une réponse aux causes de la Diaspora?"
                 </div>
             </div>
 
@@ -123,7 +121,7 @@
             <div class="mb-10 text-center">
                 <h2 class="text-3xl font-bold text-brand-dark mb-4">2. Les Domaines en Souffrance</h2>
                 <p class="text-gray-600 max-w-4xl mx-auto text-lg">
-                    Le déficit de confiance est généralement contamné par le sectuer immobilier, miné par les arnaques foncières et l'absence de cadastre numérique, jusqu'à l'assistance sociale pour les détenus ou les rapatriements. L'écart entre les attentes légitimes de la diaspora et la réalité du terrain est critique.
+                    Le déficit de confiance est généralement contaminé par le secteur immobilier, miné par les arnaques foncières et l'absence de cadastre numérique, jusqu'à l'assistance sociale pour les détenus ou les rapatriements. L'écart entre les attentes légitimes de la diaspora et la réalité du terrain est critique.
                 </p>
             </div>
 
@@ -235,8 +233,10 @@
                 <p class="text-gray-600 mt-2">Des résultats visibles rapidement. Pas d'attente de perfection.</p>
             </div>
 
+            <!-- TIMELINE CONTAINER -->
             <div class="relative py-8">
-                <div class="timeline-line hidden md:block"></div>
+                <!-- LIGNE VERTICALE (Visible tout le temps, dépasse haut et bas) -->
+                <div class="timeline-line"></div>
 
                 <div class="flex flex-col md:flex-row items-center mb-12 relative">
                     <div class="md:w-1/2 md:pr-8 text-center md:text-right mb-4 md:mb-0">
