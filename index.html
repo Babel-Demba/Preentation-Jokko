@@ -17,7 +17,6 @@
             color: #1e3a8a;
         }
         
-        /* Palette */
         .bg-brand-dark { background-color: #1e3a8a; }
         .bg-brand-primary { background-color: #0369a1; }
         .bg-brand-accent { background-color: #0ea5e9; }
@@ -37,25 +36,27 @@
         }
         
         @media (max-width: 768px) {
-            .chart-container { height: 300px; }
+            .chart-container {
+                height: 300px;
+            }
         }
 
-        /* --- CORRECTION TIMELINE --- */
-        /* La ligne s'étend maintenant de tout en haut (top:0) à tout en bas (bottom:0) du conteneur relatif */
+        /* --- CORRECTION TIMELINE (MOBILE & DESKTOP) --- */
         .timeline-line {
             position: absolute;
             left: 50%;
-            top: 0;       /* Dépassement vers le haut (dans le padding du parent) */
-            bottom: 0;    /* Dépassement vers le bas (dans le padding du parent) */
+            /* S'étend du tout haut au tout bas du conteneur parent */
+            top: 0; 
+            bottom: 0;
             width: 4px;
             background-color: #0ea5e9;
             transform: translateX(-50%);
-            z-index: 0;   /* Derrière les éléments */
+            z-index: 0; /* Reste derrière les points et les cartes */
         }
         
         .timeline-point {
             position: relative;
-            z-index: 10;  /* Devant la ligne */
+            z-index: 10; /* Passe devant la ligne */
         }
     </style>
 </head>
@@ -226,20 +227,20 @@
         </div>
     </section>
 
-    <section class="py-12 px-4 bg-white">
+    <section class="py-12 px-4 bg-white relative">
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-brand-dark">5. La Feuille de Route</h2>
                 <p class="text-gray-600 mt-2">Des résultats visibles rapidement. Pas d'attente de perfection.</p>
             </div>
 
-            <!-- TIMELINE CONTAINER -->
+            <!-- CONTAINER RELATIF POUR LA LIGNE -->
             <div class="relative py-8">
-                <!-- LIGNE VERTICALE (Visible tout le temps, dépasse haut et bas) -->
+                <!-- LIGNE CORRIGÉE : top-0 et bottom-0 pour dépasser -->
                 <div class="timeline-line"></div>
 
-                <div class="flex flex-col md:flex-row items-center mb-12 relative">
-                    <div class="md:w-1/2 md:pr-8 text-center md:text-right mb-4 md:mb-0">
+                <div class="flex flex-col md:flex-row items-center mb-12 relative z-10">
+                    <div class="md:w-1/2 md:pr-8 text-center md:text-right mb-4 md:mb-0 relative z-10 bg-[#f0f9ff] md:bg-transparent rounded p-2 md:p-0">
                         <h3 class="text-xl font-bold text-brand-primary">L'Acte Politique</h3>
                         <p class="text-gray-600 text-sm">Décret présidentiel officialisant le Guichet Unique. Un signal fort au sommet de l'État.</p>
                     </div>
@@ -247,17 +248,17 @@
                     <div class="md:w-1/2 md:pl-8 hidden md:block"></div>
                 </div>
 
-                <div class="flex flex-col md:flex-row items-center mb-12 relative">
+                <div class="flex flex-col md:flex-row items-center mb-12 relative z-10">
                     <div class="md:w-1/2 md:pr-8 hidden md:block"></div>
                     <div class="timeline-point w-8 h-8 bg-brand-primary rounded-full border-4 border-white shadow-lg flex-shrink-0"></div>
-                    <div class="md:w-1/2 md:pl-8 text-center md:text-left mt-4 md:mt-0">
+                    <div class="md:w-1/2 md:pl-8 text-center md:text-left mt-4 md:mt-0 relative z-10 bg-[#f0f9ff] md:bg-transparent rounded p-2 md:p-0">
                         <h3 class="text-xl font-bold text-brand-primary">Task Force Diaspora</h3>
                         <p class="text-gray-600 text-sm">Équipe projet mixte (Locaux + Diaspora). On ne construit pas <i>pour</i> eux, mais <i>avec</i> eux.</p>
                     </div>
                 </div>
 
-                <div class="flex flex-col md:flex-row items-center mb-12 relative">
-                    <div class="md:w-1/2 md:pr-8 text-center md:text-right mb-4 md:mb-0">
+                <div class="flex flex-col md:flex-row items-center mb-12 relative z-10">
+                    <div class="md:w-1/2 md:pr-8 text-center md:text-right mb-4 md:mb-0 relative z-10 bg-[#f0f9ff] md:bg-transparent rounded p-2 md:p-0">
                         <h3 class="text-xl font-bold text-brand-primary">Lancement MVP</h3>
                         <p class="text-gray-600 text-sm">Mise en ligne rapide d'une première version du portail. Montrer le mouvement, créer l'élan.</p>
                     </div>
@@ -265,7 +266,7 @@
                     <div class="md:w-1/2 md:pl-8 hidden md:block"></div>
                 </div>
 
-                <div class="bg-brand-dark text-white p-6 rounded-xl text-center shadow-2xl relative z-20 mx-4 md:mx-auto md:w-2/3">
+                <div class="bg-brand-dark text-white p-6 rounded-xl text-center shadow-2xl relative z-20 mx-4 md:mx-auto md:w-2/3 border-4 border-white">
                     <div class="text-brand-highlight font-bold uppercase tracking-wider mb-2">Objectif Cible</div>
                     <div class="text-3xl font-black mb-2">17 DÉCEMBRE 2025</div>
                     <div class="text-sm opacity-80">Grande campagne lors de la Journée de la Diaspora</div>
@@ -349,12 +350,8 @@
                 labels: processedLabelsPassport,
                 datasets: [{
                     label: 'Coût Total Estimé ($)',
-                    data: [50, 1400, 70], // 50 local, 1400 (flight+hotel+days off), 70 (online fee)
-                    backgroundColor: [
-                        '#0ea5e9', // Brand accent
-                        '#ef4444', // Red for bad
-                        '#f59e0b'  // Gold for target
-                    ],
+                    data: [50, 1400, 70], 
+                    backgroundColor: ['#0ea5e9', '#ef4444', '#f59e0b'],
                     borderWidth: 0,
                     borderRadius: 6
                 }]
@@ -362,25 +359,8 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            title: function(tooltipItems) {
-                                const item = tooltipItems[0];
-                                let label = item.chart.data.labels[item.dataIndex];
-                                if (Array.isArray(label)) return label.join(' ');
-                                return label;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: { display: true, text: 'Coût ($)' }
-                    }
-                }
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
             }
         });
 
@@ -400,9 +380,7 @@
                     backgroundColor: 'rgba(14, 165, 233, 0.2)',
                     borderColor: '#0ea5e9',
                     pointBackgroundColor: '#0ea5e9',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: '#0ea5e9'
+                    pointBorderColor: '#fff'
                 }, {
                     label: 'Réalité Actuelle',
                     data: [2, 1, 1, 3, 2],
@@ -410,74 +388,34 @@
                     backgroundColor: 'rgba(239, 68, 68, 0.2)',
                     borderColor: '#ef4444',
                     pointBackgroundColor: '#ef4444',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: '#ef4444'
+                    pointBorderColor: '#fff'
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 elements: { line: { borderWidth: 3 } },
-                scales: {
-                    r: {
-                        angleLines: { display: true },
-                        suggestedMin: 0,
-                        suggestedMax: 10,
-                        grid: { color: 'rgba(0, 0, 0, 0.1)' },
-                        pointLabels: {
-                            font: { size: 11, family: "'Roboto', sans-serif" }
-                        }
-                    }
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            title: function(tooltipItems) {
-                                const item = tooltipItems[0];
-                                let label = item.chart.data.labels[item.dataIndex];
-                                if (Array.isArray(label)) return label.join(' ');
-                                return label;
-                            }
-                        }
-                    }
-                }
+                scales: { r: { angleLines: { display: true }, suggestedMin: 0, suggestedMax: 10 } }
             }
         });
 
-        // --- CHART 3: JOKKO Initiative (Plotly Bar - Canvas) ---
+        // --- CHART 3: JOKKO Initiative (Plotly) ---
         var trace1 = {
             x: ['Dette Nationale', 'Infrastructures Santé', 'Éducation Numérique', 'Fonds d\'Urgence'],
             y: [40, 30, 20, 10],
             name: 'Allocation',
             type: 'bar',
-            marker: {
-                color: ['#1e3a8a', '#0369a1', '#0ea5e9', '#f59e0b']
-            }
+            marker: { color: ['#1e3a8a', '#0369a1', '#0ea5e9', '#f59e0b'] }
         };
-
-        var dataPlotly = [trace1];
-        var layoutPlotly = {
-            title: {
-                text: 'Répartition Cible des Fonds Jokko',
-                font: { family: 'Roboto', size: 16, color: '#1e3a8a' }
-            },
+        Plotly.newPlot('jokkoChart', [trace1], {
+            title: { text: 'Répartition Cible des Fonds Jokko', font: { family: 'Roboto', size: 16, color: '#1e3a8a' } },
             font: { family: 'Roboto' },
             showlegend: false,
             autosize: true,
             margin: { l: 40, r: 20, t: 40, b: 40 },
-            xaxis: {
-                tickfont: { size: 11 }
-            },
-            yaxis: {
-                title: 'Pourcentage (%)'
-            },
             paper_bgcolor: 'rgba(0,0,0,0)',
             plot_bgcolor: 'rgba(0,0,0,0)'
-        };
-        var configPlotly = { responsive: true, displayModeBar: false };
-
-        Plotly.newPlot('jokkoChart', dataPlotly, layoutPlotly, configPlotly);
+        }, { responsive: true, displayModeBar: false });
 
     </script>
 </body>
